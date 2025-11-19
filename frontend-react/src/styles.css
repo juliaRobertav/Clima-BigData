@@ -1,0 +1,50 @@
+:root {
+  --bg: #0b1020;
+  --bg-soft: #121830;
+  --text: #e6edf7;
+  --muted: #b7c1d6;
+  --primary: #4cc9f0;
+  --accent: #b5179e;
+  --card: #16213e;
+  --border: rgba(255,255,255,0.08);
+}
+* { box-sizing: border-box }
+html, body, #root { height: 100% }
+body { margin: 0; background: linear-gradient(180deg, #050816 0%, var(--bg) 100%); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif }
+a { color: var(--primary); text-decoration: none }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 24px }
+.nav { position: sticky; top: 0; backdrop-filter: saturate(180%) blur(8px); background: rgba(18,24,48,0.6); border-bottom: 1px solid var(--border); z-index: 10 }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: .3px }
+.brand-dot { width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, var(--accent), var(--primary)) }
+.nav-links { display: flex; gap: 18px }
+
+.hero { padding: 64px 24px 24px; text-align: center }
+.hero h1 { font-size: 42px; margin: 0 0 12px 0 }
+.hero p { color: var(--muted); font-size: 16px; margin: 0 auto 18px; max-width: 720px }
+.cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 18px }
+.btn { border: 1px solid var(--border); color: var(--text); background: linear-gradient(180deg, #1b274d 0%, #101935 100%); padding: 10px 14px; border-radius: 10px; cursor: pointer; transition: transform .08s ease }
+.btn:hover { transform: translateY(-1px) }
+.btn-primary { background: linear-gradient(180deg, #1b2b72 0%, #0f1f53 100%); border-color: rgba(76,201,240,.35) }
+.btn-ghost { background: transparent }
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px }
+.card h3 { margin: 8px 0 8px; font-size: 18px }
+.card p { margin: 0; color: var(--muted) }
+
+.section { margin: 24px 0 }
+.section h2 { margin: 0 0 10px 0; font-size: 24px }
+.muted { color: var(--muted) }
+
+.controls { display: grid; grid-template-columns: repeat(2, minmax(260px, 1fr)); gap: 12px; align-items: end }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap }
+label { font-size: 13px; color: var(--muted) }
+input, select { width: 100%; padding: 9px 10px; border-radius: 8px; border: 1px solid var(--border); background: #0f152d; color: var(--text) }
+button { all: unset }
+
+.charts { display: grid; gap: 16px }
+.insights { list-style: none; padding: 0; margin: 8px 0 0 }
+.insights li { margin-bottom: 6px; color: var(--text) }
+.footer { border-top: 1px solid var(--border); margin-top: 24px; padding: 18px; text-align: center; color: var(--muted) }
