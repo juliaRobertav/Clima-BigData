@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react'
 import axios from 'axios'
 import Plot from 'react-plotly.js'
+import Plotly from 'plotly.js-dist-min'
 
 type ApiData = {
   monthly: { month: string[]; avg_temp: number[] }
@@ -20,6 +21,8 @@ export default function App() {
   const [showBars, setShowBars] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const csvRef = useRef<HTMLInputElement | null>(null)
+  const lineDivRef = useRef<HTMLDivElement | null>(null)
+  const barDivRef = useRef<HTMLDivElement | null>(null)
 
   async function run() {
     setLoading(true)
@@ -113,13 +116,23 @@ export default function App() {
                 <input type="month" value={end} onChange={e => setEnd(e.target.value)} />
               </div>
             </div>
-            <div className="row">
-              <button className="btn btn-primary" onClick={run} disabled={loading}>{loading ? 'Processando...' : 'Executar'}</button>
-              <a className="btn" href="/api/csv" target="_blank" rel="noreferrer">Baixar CSV</a>
-              <label className="row">
-                <input type="checkbox" checked={showBars} onChange={e => setShowBars(e.target.checked)} /> Mostrar barras
-              </label>
-            </div>
+          <div className="row">
+            <button className="btn btn-primary" onClick={run} disabled={loading}>{loading ? 'Processando...' : 'Executar'}</button>
+            <a className="btn" href="/api/csv" target="_blank" rel="noreferrer">Baixar CSV</a>
+            <label className="row">
+              <input type="checkbox" checked={showBars} onChange={e => setShowBars(e.target.checked)} /> Mostrar barras
+            </label>
+            {data && (
+              <>
+                <button className="btn" onClick={() => { if (lineDivRef.current) Plotly.downloadImage(lineDivRef.current, {format:'png', filename:'clima-linha-tendencia'}) }}>
+                  Exportar PNG (linha)
+                </button>
+                {showBars && <button className="btn" onClick={() => { if (barDivRef.current) Plotly.downloadImage(barDivRef.current, {format:'png', filename:'clima-barras-mensal'}) }}>
+                  Exportar PNG (barras)
+                </button>}
+              </>
+            )}
+          </div>
             {error && <p className="muted" style={{ color: '#ffb4b4' }}>{error}</p>}
           </div>
         </div>
@@ -141,6 +154,7 @@ export default function App() {
                 layout={{ paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: '#0f152d', margin: { t: 32, r: 12, b: 40, l: 48 }, yaxis: { title: '°C', gridcolor: 'rgba(255,255,255,0.1)' }, xaxis: { title: 'Mês', gridcolor: 'rgba(255,255,255,0.05)' }, height: 520 }}
                 config={{ displayModeBar: true }}
                 style={{ width: '100%' }}
+                onInitialized={(_, gd) => { lineDivRef.current = gd as any }}
               />
               {showBars && (
                 <Plot
@@ -148,6 +162,7 @@ export default function App() {
                   layout={{ paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: '#0f152d', margin: { t: 32, r: 12, b: 40, l: 48 }, yaxis: { title: '°C', gridcolor: 'rgba(255,255,255,0.1)' }, xaxis: { title: 'Mês', gridcolor: 'rgba(255,255,255,0.05)' }, height: 360 }}
                   config={{ displayModeBar: true }}
                   style={{ width: '100%' }}
+                  onInitialized={(_, gd) => { barDivRef.current = gd as any }}
                 />
               )}
               <ul className="insights">
